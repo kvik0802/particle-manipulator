@@ -56,9 +56,11 @@ particle-python/
     ```
 
 3.  **Run the server**:
+    You can run the server directly or using npm:
     ```bash
-    python server.py
+    npm start
     ```
+    *Alternatively:* `python backend/server.py`
 
 4.  **Open in Browser**:
     Navigate to [http://localhost:5000](http://localhost:5000) to experience the Particle Orb.

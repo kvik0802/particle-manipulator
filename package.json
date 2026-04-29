@@ -1,0 +1,11 @@
+{
+  "name": "particle-python",
+  "version": "1.2.0",
+  "description": "Particle Orb — Deep Space creative coding project",
+  "main": "backend/server.py",
+  "scripts": {
+    "start": "python backend/server.py"
+  },
+  "author": "VICKY",
+  "license": "MIT"
+}
