@@ -57,8 +57,8 @@ const canvas = document.getElementById('scene');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 0.6;
+renderer.toneMapping = THREE.ReinhardToneMapping;
+renderer.toneMappingExposure = 1.2;
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x000005);
@@ -181,33 +181,32 @@ void main(){
 
   vec4 mv=modelViewMatrix*vec4(pos,1.);
   gl_Position=projectionMatrix*mv;
-  gl_PointSize=clamp(uParticleSize*(220./-mv.z),0.4,7.);
-  vDepth=clamp(-mv.z/20.,0.,1.);
+  
+  // Natural "Glossy" twinkle logic
+  float twinkle = sin(uTime * (1.5 + aSeed * 2.0) + aSeed * 10.0) * 0.3 + 0.7;
+  gl_PointSize=clamp(uParticleSize*(280./-mv.z),0.6,8.0) * twinkle;
+  vDepth=clamp(-mv.z/30.,0.,1.);
 
   // Nebula palette: deep purple core → violet/magenta mid → blue-teal edge
   // depth 0=close/bright, 1=far
   float distFromCenter=length(aEnd)/6.;
   float coreFactor=1.-clamp(distFromCenter,0.,1.);
 
-  // Electric Nebula: Cyan/Blue (0.55-0.65) → Magenta/Purple (0.8-0.9) → Gold/Yellow (0.1-0.2)
-  float hue=fract(0.55 + aSeed * 0.4 + uTime * 0.02);
-  float s=0.9;
-  float l=0.25+coreFactor*0.3+0.1*sin(uTime*.5+aSeed*2.5);
+  // Pure Glossy Palette: Crystallized Cyan → Pearl White → Deep Amethyst
+  float hueShift = sin(uTime * 0.1 + aSeed * 0.5) * 0.05;
+  float baseHue = fract(0.58 + hueShift); // Cyan base
   
-  vColor=vec3(0.);
-  float h6=hue*6.;
-  float c2=(1.-abs(2.*l-1.))*s;
-  float xc=c2*(1.-abs(mod(h6,2.)-1.));
-  float m2=l-c2*.5;
-  if(h6<1.)vColor=vec3(c2,xc,0.);
-  else if(h6<2.)vColor=vec3(xc,c2,0.);
-  else if(h6<3.)vColor=vec3(0.,c2,xc);
-  else if(h6<4.)vColor=vec3(0.,xc,c2);
-  else if(h6<5.)vColor=vec3(xc,0.,c2);
-  else vColor=vec3(c2,0.,xc);
-  vColor+=m2;
-  vColor *= 1.4; // Boost intensity
-  vAlpha=smoothstep(50.,4.,-mv.z)*.8;
+  // Mix in some "pure" white based on depth and core proximity
+  vec3 baseColor = vec3(0.1, 0.6, 1.0); // Cyan
+  vec3 altColor = vec3(0.8, 0.2, 1.0); // Magenta/Amethyst
+  vec3 pureColor = mix(baseColor, altColor, sin(aSeed * 3.14 + uTime * 0.2) * 0.5 + 0.5);
+  
+  // Add a "glossy" highlight factor
+  float glossy = pow(coreFactor, 2.5) * 0.6;
+  vColor = mix(pureColor, vec3(1.0), glossy); 
+  vColor *= 1.2; // Clean brightness
+  
+  vAlpha=smoothstep(60.,2.,-mv.z) * (0.6 + coreFactor * 0.4);
 }
 `;
 
@@ -219,13 +218,14 @@ void main(){
   vec2 uv=gl_PointCoord-.5;
   float d=length(uv);
   if(d>.5)discard;
-  // natural soft glow — bright hot core, diffuse halo
-  float core=smoothstep(.5,.0,d);
-  float halo=exp(-d*4.5)*.35;
-  float bright=core*.6+halo;
-  // subtle inner shimmer
-  float shimmer=exp(-d*12.)*.25;
-  gl_FragColor=vec4(vColor*(bright+shimmer), vAlpha*bright);
+  
+  // Glossy Core: Bright specular center with soft falloff
+  float core = smoothstep(0.5, 0.0, d);
+  float specular = exp(-d * 15.0) * 0.8;
+  float softHalo = exp(-d * 4.0) * 0.25;
+  
+  float intensity = (core * 0.4 + specular + softHalo);
+  gl_FragColor = vec4(vColor * intensity, vAlpha * intensity);
 }`;
 
 // ── GEOMETRY GENERATORS ────────────────────────────
