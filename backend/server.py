@@ -31,7 +31,7 @@ MORPH_SHAPES = [
 @app.route('/')
 def index():
     """Serve the main particle system experience."""
-    return send_from_directory('.', 'index.html')
+    return send_from_directory('../frontend', 'index.html')
 
 # --- API Routes ---
 

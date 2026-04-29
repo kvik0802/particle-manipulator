@@ -32,11 +32,13 @@ A high-performance, interactive particle morphing system powered by **WebGL (Thr
 
 ```bash
 particle-python/
-├── server.py           # Flask backend server
-├── index.html          # Main WebGL frontend (350+ lines of optimized code)
-├── requirements.txt    # Python dependencies
-├── README.md           # Documentation
-└── API_WALKTHROUGH.md  # Detailed API documentation
+├── backend/
+│   ├── server.py           # Flask backend server
+│   └── requirements.txt    # Python dependencies
+├── frontend/
+│   └── index.html          # Main WebGL frontend
+├── README.md               # Documentation
+└── API_WALKTHROUGH.md      # Detailed API documentation
 ```
 
 ## 🛠️ Installation & Setup
@@ -49,6 +51,7 @@ particle-python/
 
 2.  **Install dependencies**:
     ```bash
+    cd backend
     pip install -r requirements.txt
     ```
 
