@@ -52,7 +52,7 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { AfterimagePass } from 'three/addons/postprocessing/AfterimagePass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-const N = 80000, DURATION = 2.8;
+const N = 150000, DURATION = 3.2;
 const canvas = document.getElementById('scene');
 const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -189,26 +189,24 @@ void main(){
   float distFromCenter=length(aEnd)/6.;
   float coreFactor=1.-clamp(distFromCenter,0.,1.);
 
-  // slow hue drift per particle
-  float baseHue=fract(aSeed*.6+uTime*.018);
-  // blend from deep purple (0.72) → blue (0.62) → magenta (0.82) naturally
-  float hue=fract(0.62+baseHue*.25);
-  float s=0.8-coreFactor*.2;
-  // lighter in core, darker at edges — like real nebula
-  float l=0.18+coreFactor*0.22+0.07*sin(uTime*.35+aSeed*1.8);
-
-  float c2=(1.-abs(2.*l-1.))*s;
-  float xc=c2*(1.-abs(mod(hue*6.,2.)-1.));
-  float m2=l-c2*.5;
-  vec3 rgb;
+  // Electric Nebula: Cyan/Blue (0.55-0.65) → Magenta/Purple (0.8-0.9) → Gold/Yellow (0.1-0.2)
+  float hue=fract(0.55 + aSeed * 0.4 + uTime * 0.02);
+  float s=0.9;
+  float l=0.25+coreFactor*0.3+0.1*sin(uTime*.5+aSeed*2.5);
+  
+  vColor=vec3(0.);
   float h6=hue*6.;
-  if(h6<1.)rgb=vec3(c2,xc,0.);
-  else if(h6<2.)rgb=vec3(xc,c2,0.);
-  else if(h6<3.)rgb=vec3(0.,c2,xc);
-  else if(h6<4.)rgb=vec3(0.,xc,c2);
-  else if(h6<5.)rgb=vec3(xc,0.,c2);
-  else rgb=vec3(c2,0.,xc);
-  vColor=rgb+m2;
+  float c2=(1.-abs(2.*l-1.))*s;
+  float xc=c2*(1.-abs(mod(h6,2.)-1.));
+  float m2=l-c2*.5;
+  if(h6<1.)vColor=vec3(c2,xc,0.);
+  else if(h6<2.)vColor=vec3(xc,c2,0.);
+  else if(h6<3.)vColor=vec3(0.,c2,xc);
+  else if(h6<4.)vColor=vec3(0.,xc,c2);
+  else if(h6<5.)vColor=vec3(xc,0.,c2);
+  else vColor=vec3(c2,0.,xc);
+  vColor+=m2;
+  vColor *= 1.4; // Boost intensity
   vAlpha=smoothstep(50.,4.,-mv.z)*.8;
 }
 `;
@@ -237,7 +235,7 @@ function cube(n){const p=new Float32Array(n*3),S=1.75,ed=[[-1,-1,-1,1,-1,-1],[-1
 function star(n){const p=new Float32Array(n*3),oR=4.5,iR=1.8,pts=5;for(let i=0;i<n;i++){const sp=Math.floor(Math.random()*pts),oa=(sp/pts)*Math.PI*2-Math.PI/2,ia1=((sp-.5)/pts)*Math.PI*2-Math.PI/2,ia2=((sp+.5)/pts)*Math.PI*2-Math.PI/2;const tx=Math.cos(oa)*oR,ty=Math.sin(oa)*oR,i1x=Math.cos(ia1)*iR,i1y=Math.sin(ia1)*iR,i2x=Math.cos(ia2)*iR,i2y=Math.sin(ia2)*iR;let u=Math.random(),v=Math.random();if(u+v>1){u=1-u;v=1-v;}const w=1-u-v;p[i*3]=tx*w+i1x*u+i2x*v;p[i*3+1]=ty*w+i1y*u+i2y*v;p[i*3+2]=(Math.random()-.5)*.8;}return p;}
 function flower(n){const p=new Float32Array(n*3),sc=4;for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,ps=Math.abs(Math.cos(6*a*.5)),r=sc*(.15+.85*ps)*Math.sqrt(Math.random()),h=Math.sin(ps*Math.PI)*1.4*Math.random();p[i*3]=Math.cos(a)*r;p[i*3+1]=h;p[i*3+2]=Math.sin(a)*r;}return p;}
 function cloud(n){const p=new Float32Array(n*3);for(let i=0;i<n;i++){const t=Math.random()*Math.PI*2,ph=Math.acos(2*Math.random()-1),r=Math.cbrt(Math.random())*10;p[i*3]=r*Math.sin(ph)*Math.cos(t);p[i*3+1]=r*Math.sin(ph)*Math.sin(t);p[i*3+2]=r*Math.cos(ph);}return p;}
-function textPts(word,n){const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});cv.width=cv.height=512;let fs=280;cx.font=`bold ${fs}px Inter,Arial,sans-serif`;while(cx.measureText(word.toUpperCase()).width>440&&fs>40){fs-=8;cx.font=`bold ${fs}px Inter,Arial,sans-serif`;}cx.fillStyle='#fff';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(word.toUpperCase(),256,256);const d=cx.getImageData(0,0,512,512).data,px=[];for(let y=0;y<512;y++)for(let x=0;x<512;x++)if(d[(y*512+x)*4+3]>100)px.push(x,y);if(px.length<10)return sphere(n);const p=new Float32Array(n*3);for(let i=0;i<n;i++){const pi=Math.floor(Math.random()*(px.length/2))*2;p[i*3]=((px[pi]/512)-.5)*9;p[i*3+1]=-((px[pi+1]/512)-.5)*9;p[i*3+2]=(Math.random()-.5)*1.2;}return p;}
+function textPts(word,n){const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});cv.width=1024;cv.height=512;let fs=220;cx.font=`bold ${fs}px Inter,Arial,sans-serif`;while(cx.measureText(word.toUpperCase()).width>960&&fs>30){fs-=10;cx.font=`bold ${fs}px Inter,Arial,sans-serif`;}cx.fillStyle='#fff';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(word.toUpperCase(),512,256);const d=cx.getImageData(0,0,1024,512).data,px=[];for(let y=0;y<512;y+=2)for(let x=0;x<1024;x+=2)if(d[(y*1024+x)*4+3]>120)px.push(x,y);if(px.length<10)return sphere(n);const p=new Float32Array(n*3);for(let i=0;i<n;i++){const pi=Math.floor(Math.random()*(px.length/2))*2;p[i*3]=((px[pi]/1024)-.5)*20;p[i*3+1]=-((px[pi+1]/512)-.5)*10;p[i*3+2]=(Math.random()-.5)*1.5;}return p;}
 
 const SYMS={love:heart,cube,star,circle:sphere,flower};
 function getTarget(w){const k=w.toLowerCase().trim();return SYMS[k]?SYMS[k](N):k.length?textPts(k,N):cloud(N);}

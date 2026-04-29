@@ -8,7 +8,7 @@ PROJECT_CONFIG = {
     "name": "Particle Orb — Deep Space",
     "version": "1.2.0",
     "author": "VICKY",
-    "particle_count": 80000,
+    "particle_count": 150000,
     "theme": "nebula",
     "settings": {
         "bloom_strength": 0.45,
