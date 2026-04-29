@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory, jsonify, request
 import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend', static_url_path='')
 
 # Mock database for demonstration
 PROJECT_CONFIG = {
@@ -31,7 +31,7 @@ MORPH_SHAPES = [
 @app.route('/')
 def index():
     """Serve the main particle system experience."""
-    return send_from_directory('../frontend', 'index.html')
+    return app.send_static_file('index.html')
 
 # --- API Routes ---
 
@@ -57,6 +57,6 @@ def handle_settings():
 
 if __name__ == '__main__':
     print("--- Particle Morphing Server is running! ---")
-    print("URL: http://localhost:5000")
+    print("URL: http://localhost:5001")
     print("API Endpoints available at /api/metadata, /api/shapes, /api/settings")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)

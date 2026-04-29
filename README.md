@@ -65,7 +65,7 @@ particle-python/
     *Alternatively:* `python backend/server.py`
 
 4.  **Open in Browser**:
-    Navigate to [http://localhost:5000](http://localhost:5000) to experience the Particle Orb.
+    Navigate to [http://localhost:5001](http://localhost:5001) to experience the Particle Orb.
 
 ## 🕹️ Controls
 
