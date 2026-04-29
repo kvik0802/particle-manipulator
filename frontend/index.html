@@ -191,6 +191,7 @@ void main(){
   // Nebula palette: deep purple core → violet/magenta mid → blue-teal edge
   // depth 0=close/bright, 1=far
   float distFromCenter=length(aEnd)/6.;
+  float coreFactor=1.-clamp(distFromCenter,0.,1.);
   // Transition to shape-specific color
   vec3 shapeColor = uTargetColor;
   
