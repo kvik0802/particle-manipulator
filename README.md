@@ -1,6 +1,9 @@
 # Particle Orb — Deep Space
 
-A high-performance, interactive particle morphing system powered by **WebGL (Three.js)** and **Flask**. This project features a 80,000-particle engine that can dynamically transition between complex 3D shapes and custom text, all while maintaining a smooth, cinematic aesthetic.
+A high-performance, interactive particle morphing system powered by **WebGL (Three.js)** and **Flask**. This project features a 150,000-particle engine that can dynamically transition between complex 3D shapes and custom text, all while maintaining a smooth, cinematic aesthetic.
+
+### 🌐 Live Demo
+**Access the project through the website:** [https://work-flow-0ltc.onrender.com/](https://work-flow-0ltc.onrender.com/)
 
 ![Particle Orb Showcase](https://raw.githubusercontent.com/kvik0802/work-flow/main/media/how-does-it-work.mp4)
 
