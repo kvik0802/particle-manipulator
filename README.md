@@ -78,6 +78,17 @@ particle-python/
 -   **Pan**: Right-click and drag to move the camera.
 -   **GUI**: Use the control panel on the top-right to tweak visuals.
 
+## 🌐 Deployment (Live Website)
+
+This project is configured for easy deployment on **Render**.
+1. Create a new **Web Service** on [Render](https://render.com).
+2. Connect your GitHub repository.
+3. Use the following settings:
+   - **Build Command**: `pip install -r backend/requirements.txt`
+   - **Start Command**: `gunicorn --chdir backend server:app`
+
+---
+
 ## 📡 API Endpoints
 
 The Flask server provides the following endpoints:
