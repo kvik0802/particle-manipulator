@@ -356,7 +356,7 @@
   <!-- Corner info -->
   <div id="corner-info">
     <span class="ci-label">Particles</span>
-    <span class="ci-val" id="ci-particles">150,000</span>
+    <span class="ci-val" id="ci-particles">1,500,000</span>
     <span class="ci-label" style="margin-top:6px">FPS</span>
     <span class="ci-val" id="ci-fps">—</span>
   </div>
@@ -395,7 +395,7 @@
     import { AfterimagePass } from 'three/addons/postprocessing/AfterimagePass.js';
     import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-    const N = 150000, DURATION = 3.2;
+    const N = 1500000, DURATION = 3.2;
     const canvas = document.getElementById('scene');
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
     renderer.setSize(innerWidth, innerHeight);
@@ -531,7 +531,7 @@ void main(){
   vec4 mv=modelViewMatrix*vec4(pos,1.);
   gl_Position=projectionMatrix*mv;
   float twinkle=sin(uTime*(1.5+aSeed*2.)+aSeed*10.)*.3+.7;
-  gl_PointSize=clamp(uParticleSize*(280./-mv.z),.6,8.)*twinkle;
+  gl_PointSize=clamp(uParticleSize*(690./-mv.z),.6,8.)*twinkle;
 
   float distC=length(aEnd)/6.,core=1.-clamp(distC,0.,1.);
   float glossy=pow(core,2.5)*.2;
