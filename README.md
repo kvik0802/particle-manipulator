@@ -1,4 +1,4 @@
-# Particle Orb — Deep Space
+# DeepOrb — Deep Space
 
 A high-performance, interactive particle morphing system powered by **WebGL (Three.js)** and **Flask**. This project features a 150,000-particle engine that can dynamically transition between complex 3D shapes and custom text, all while maintaining a smooth, cinematic aesthetic.
 
