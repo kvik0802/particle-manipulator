@@ -101,4 +101,3 @@ The Flask server provides the following endpoints:
 
 ---
 
-Built by **Naini Vivekanand**
