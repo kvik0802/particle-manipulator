@@ -380,8 +380,8 @@
     <button class="shape-btn" data-shape="flower"><span class="ico">🌸</span>Flower</button>
     <div class="nav-divider"></div>
     <button class="shape-btn" data-shape="galaxy"><span class="ico">🌌</span>Galaxy</button>
-    <button class="shape-btn" data-shape="tornado"><span class="ico">🌪️</span>Tornado</button>
-    <button class="shape-btn" data-shape="ring"><span class="ico">💫</span>Ring</button>
+    <button class="shape-btn" data-shape="cone"><span class="ico">▲</span>cone</button>
+    <button class="shape-btn" data-shape="ring"><span class="ico">⟳</span>Ring</button>
   </nav>
 
   <!-- Corner info -->
@@ -504,7 +504,7 @@
     // ── SHAPE COLORS ──
     const SHAPE_COLORS = {
       love: 0xff2255, cube: 0x00d4ff, star: 0xffcc00, circle: 0x00d4ff,
-      flower: 0xff66bb, galaxy: 0xaa66ff, tornado: 0x44ddff,
+      flower: 0xff66bb, galaxy: 0xaa66ff, cone: 0x44ddff,
       ring: 0xff9944
     };
 
@@ -631,7 +631,7 @@ void main(){
       return p;
     }
 
-    function tornado(n) {
+    function cone(n) {
       const p = new Float32Array(n * 3);
       for (let i = 0; i < n; i++) {
         const h = (Math.random() - .2) * 9;
@@ -674,7 +674,7 @@ void main(){
       return p;
     }
 
-    const SYMS = { love: heart, cube, star, circle: sphere, flower, galaxy, tornado, ring };
+    const SYMS = { love: heart, cube, star, circle: sphere, flower, galaxy, cone, ring };
     function getTarget(w) { const k = w.toLowerCase().trim(); return SYMS[k] ? SYMS[k](N) : k.length ? textPts(k, N) : cloud(N); }
 
     // ── PARTICLE MESH ──
