@@ -1,103 +1,126 @@
-# DeepOrb — Deep Space
+<div align="center">
+  <img src="https://raw.githubusercontent.com/kvik0802/particle-manipulator/main/media/how-does-it-work.mp4" alt="Particle Manipulator Demo" width="100%"/>
 
-A high-performance, interactive particle morphing system powered by **WebGL (Three.js)** and **Flask**. This project features a 150,000-particle engine that can dynamically transition between complex 3D shapes and custom text, all while maintaining a smooth, cinematic aesthetic.
+  # ✦ Particle Manipulator ✦
 
-###  Live Demo
-**Access the project through the website:** [https://work-flow-0ltc.onrender.com/](https://work-flow-0ltc.onrender.com/)
+  **An interactive 3D particle morphing engine** — 150,000 WebGL particles that seamlessly transform between shapes, text, and cosmic formations in real time.
 
-![Particle Orb Showcase](https://raw.githubusercontent.com/kvik0802/work-flow/main/media/how-does-it-work.mp4)
+  [![Live Demo](https://img.shields.io/badge/LIVE_DEMO-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)](https://work-flow-0ltc.onrender.com/)
+  [![Made with Three.js](https://img.shields.io/badge/Made%20with-Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)](https://threejs.org/)
+  [![Flask](https://img.shields.io/badge/Backend-Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-##  Watch the Demo
-[Click here to watch the "How it works" video](./media/how-does-it-work.mp4)
+  <br/>
+</div>
 
-##  Key Features
+---
 
--   **High-Density Engine**: Renders 80,000 particles simultaneously using custom GLSL shaders.
--   **Dynamic Morphing**: Seamlessly transition between predefined shapes (Heart, Cube, Star, Sphere, Flower) or any custom text typed by the user.
--   **Cinematic Visuals**: 
-    -   **Glassmorphic UI**: Sleek, transparent control panels with backdrop filters.
-    -   **Post-Processing**: Unreal Bloom for that "nebula" glow and Afterimage for smooth motion trails.
-    -   **Procedural Starfield**: A natural-looking cosmic background with twinkling stars.
--   **Interactive Physics**: Particles react to mouse movement with adjustable attraction/repulsion forces.
--   **Live Tuning**: Integrated GUI (`lil-gui`) to modify bloom, particle size, physics, and exposure in real-time.
--   **Flask Backend**: Serves the application and provides API endpoints for configuration and metadata.
+## Overview
 
-##  Tech Stack
+Particle Manipulator is a high-performance creative coding project that brings **150,000 particles** to life. Each particle is individually animated via custom GLSL shaders, enabling butter-smooth morphing between 8 distinct 3D shapes — or any text you type. The experience is enriched with cinematic bloom, motion trails, a procedurally twinkling starfield, and mouse-reactive physics.
 
-### Frontend
--   **[Three.js](https://threejs.org/)**: The core 3D engine for scene management and rendering.
--   **GLSL (Web Graphics Library Shading Language)**: Custom Vertex and Fragment shaders for high-performance particle animation and coloring.
--   **CSS3**: Modern styling with glassmorphism and responsive design.
--   **Vanilla JavaScript (ES6+)**: Modular code with `importmap` for dependency management.
+---
 
-### Backend
--   **[Python](https://www.python.org/)**: Core logic for the host server.
--   **[Flask](https://flask.palletsprojects.com/)**: A lightweight WSGI web application framework to serve the frontend and handle REST API requests.
+## ✨ Features
 
-##  Project Structure
+| | Feature | Details |
+|---|---|---|
+| 🚀 | **High-Density Engine** | 150K particles rendered in a single draw call via `THREE.Points` |
+| 🔄 | **Dynamic Morphing** | Smooth transitions between Heart, Cube, Star, Sphere, Flower, Galaxy, Cone, Ring — or any custom text |
+| ✏️ | **Text-to-Particles** | Renders typed words by sampling a hidden canvas and mapping pixels to 3D coordinates |
+| 🌟 | **Cinematic Post-Processing** | UnrealBloomPass (nebula glow), AfterimagePass (motion trails), Reinhard tone mapping |
+| 🖱️ | **Interactive Physics** | Mouse-driven attraction/repulsion + click-to-burst effect |
+| 🎨 | **Shape-Aware Colors** | Each shape has a unique palette; text renders in pure white |
+| ⚡ | **Auto-Optimization** | LOD system reduces pixel ratio & disables trails when FPS drops |
+| 🎛️ | **Real-Time GUI** | `lil-gui` panel to tweak bloom, particle size, physics, exposure, rotation & colors |
+| 🌌 | **Procedural Starfield** | 8,000 twinkling background stars with custom GLSL vertex shader |
+| 🪟 | **Glassmorphic UI** | Sleek transparent controls with backdrop blur |
 
-```bash
-particle-python/
-├── backend/
-│   ├── server.py           # Flask backend server
-│   └── requirements.txt    # Python dependencies
-├── frontend/
-│   └── index.html          # Main WebGL frontend
-├── README.md               # Documentation
-└── API_WALKTHROUGH.md      # Detailed API documentation
+---
+
+## Tech Stack
+
+```
+Frontend          Three.js 0.164 · GLSL · lil-gui · CSS3 · ES6
+Backend           Python 3 · Flask · Gunicorn
+Deployment        Render (Web Service)
 ```
 
-##  Installation & Setup
+---
 
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/vicky/particle-python.git
-    cd particle-python
-    ```
+## Getting Started
 
-2.  **Install dependencies**:
-    ```bash
-    cd backend
-    pip install -r requirements.txt
-    ```
+```bash
+# Clone the repository
+git clone https://github.com/kvik0802/particle-manipulator.git
+cd particle-manipulator
 
-3.  **Run the server**:
-    You can run the server directly or using npm:
-    ```bash
-    npm start
-    ```
-    *(This will automatically open your browser to the project URL)*
-    
-    *Alternatively:* `python backend/server.py`
+# Install Python dependencies
+cd backend
+pip install -r requirements.txt
 
-4.  **Open in Browser**:
-    Navigate to [http://localhost:5001](http://localhost:5001) to experience the Particle Orb.
+# Start the app (opens browser automatically)
+cd ..
+npm start
+```
 
-##  Controls
-
--   **Morph**: Type any word in the input box and press "Morph" or "Enter".
--   **Rotate**: Left-click and drag to rotate the orb.
--   **Zoom**: Scroll to zoom in/out.
--   **Pan**: Right-click and drag to move the camera.
--   **GUI**: Use the control panel on the top-right to tweak visuals.
-
-##  Deployment (Live Website)
-
-This project is configured for easy deployment on **Render**.
-1. Create a new **Web Service** on [Render](https://render.com).
-2. Connect your GitHub repository.
-3. Use the following settings:
-   - **Build Command**: `pip install -r backend/requirements.txt`
-   - **Start Command**: `gunicorn --chdir backend server:app`
+Then open **[http://localhost:5001](http://localhost:5001)** in your browser.
 
 ---
 
-## 📡 API Endpoints
+## Controls
 
-The Flask server provides the following endpoints:
--   `GET /api/metadata`: Returns project version and author info.
--   `GET /api/shapes`: Returns a list of supported symbolic shapes.
--   `GET /api/settings`: Returns current particle system settings.
+| Action | Control |
+|---|---|
+| **Morph to shape** | Click shape buttons in the top bar |
+| **Morph to text** | Type a word & press `Enter` or click "Morph" |
+| **Rotate view** | Left-click + drag |
+| **Zoom** | Scroll wheel |
+| **Pan** | Right-click + drag |
+| **Tune visuals** | `lil-gui` panel (top-right corner) |
 
 ---
 
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/metadata` | Project version & author info |
+| `GET` | `/api/shapes` | List of supported shapes |
+| `GET` | `/api/settings` | Current particle system settings |
+| `POST` | `/api/settings` | Update particle system settings |
+
+---
+
+## Project Structure
+
+```
+particle-manipulator/
+├── backend/
+│   ├── server.py              # Flask server
+│   └── requirements.txt       # Python deps (flask, gunicorn)
+├── frontend/
+│   └── index.html             # WebGL app (all-in-one: HTML, CSS, JS, GLSL)
+├── media/                     # Demo videos
+├── .gitignore
+├── LICENSE
+├── package.json
+└── README.md
+```
+
+---
+
+## Deployment
+
+This project is ready to deploy on **Render**:
+
+- **Build Command:** `pip install -r backend/requirements.txt`
+- **Start Command:** `gunicorn --chdir backend server:app`
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ by <a href="https://github.com/kvik0802">Naini Vivekanand</a></sub>
+  <br/>
+  <sub>Three.js · GLSL · Flask · Creative Coding</sub>
+</div>

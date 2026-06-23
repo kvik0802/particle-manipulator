@@ -1,7 +1,7 @@
 {
-  "name": "particle-python",
+  "name": "particle-manipulator",
   "version": "1.2.0",
-  "description": "Particle Orb — Deep Space creative coding project",
+  "description": "An interactive 3D particle morphing engine — 150,000 WebGL particles that seamlessly transform between shapes, text, and cosmic formations",
   "main": "backend/server.py",
   "scripts": {
     "start": "start http://localhost:5001 && python backend/server.py"
